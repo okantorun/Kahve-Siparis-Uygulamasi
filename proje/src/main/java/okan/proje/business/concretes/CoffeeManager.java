@@ -1,23 +1,31 @@
 package okan.proje.business.concretes;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import okan.proje.business.abstracts.CoffeeService;
+import okan.proje.business.abstracts.IngredientService;
 import okan.proje.dataAccess.abstracts.CoffeeDao;
 import okan.proje.entities.concretes.Coffee;
 
 public class CoffeeManager implements CoffeeService {
 	
 	private CoffeeDao coffeeDao;
-	public CoffeeManager(CoffeeDao coffeeDao) {
+	private IngredientService ingredientService;
+	
+	public CoffeeManager(CoffeeDao coffeeDao,IngredientService ingredientService) {
 		super();
 		this.coffeeDao = coffeeDao;
+		this.ingredientService = ingredientService;
 	}
 
 	@Override
 	public void order(Coffee coffee) {
-		// TODO Auto-generated method stub
-		
+	 
+		if(!controlOfIngredientStock(coffee)) {
+			System.out.println("İstediğiniz ürün için gerekli olan malzemeler yetersizdir.Lütfen başka ürün seçiniz.");
+		}
 	}
 
 	@Override
@@ -28,26 +36,45 @@ public class CoffeeManager implements CoffeeService {
 
 	@Override
 	public void delete(Coffee coffee) {
-		// TODO Auto-generated method stub
+		this.coffeeDao.delete(coffee);
 		
 	}
 
 	@Override
 	public void update(Coffee coffee) {
-		// TODO Auto-generated method stub
+		this.coffeeDao.update(coffee);
 		
 	}
 
 	@Override
 	public Coffee getCoffeeDetails(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.getCoffeeDetails(id);
 	}
 
 	@Override
 	public List<Coffee> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return this.coffeeDao.getAll();
+	}
+	
+	private boolean controlOfIngredientStock(Coffee coffee) {
+		Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
+		
+		 Iterator hmIterator = hm.entrySet().iterator();
+		 while (hmIterator.hasNext()) {		 
+			 
+	         Map.Entry mapElement
+	             = (Map.Entry)hmIterator.next();       
+	         
+	         int ingredientId = (int)mapElement.getKey();
+	         int requiredSpecifiedIngredient = (int)mapElement.getValue();
+	         int stockOfRequiredIngredient = this.ingredientService.getIngredientDetails(ingredientId).getUnitInStock();
+	         if(stockOfRequiredIngredient < requiredSpecifiedIngredient) 
+	        	 return false;
+	     }
+	     
+		 return true;
 	}
 
 }
