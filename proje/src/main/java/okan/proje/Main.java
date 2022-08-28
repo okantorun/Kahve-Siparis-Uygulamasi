@@ -2,6 +2,8 @@ package okan.proje;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+
 import okan.proje.business.abstracts.CoffeeService;
 import okan.proje.business.abstracts.IngredientService;
 import okan.proje.business.concretes.CoffeeManager;
@@ -21,7 +23,7 @@ public class Main {
 		CoffeeService coffeeService = new CoffeeManager(new InMemoryCoffeeDao(),ingredientService);
 		
 		
-	
+		
 		/*System.out.println(ingredientService.getIngredientDetails(5));
 		coffeeService.order(6);
 		System.out.println(ingredientService.getIngredientDetails(5));*/
@@ -45,5 +47,7 @@ public class Main {
 		coffeeService.add(coffee);*/
 
 	}
+	
+	
 
 }

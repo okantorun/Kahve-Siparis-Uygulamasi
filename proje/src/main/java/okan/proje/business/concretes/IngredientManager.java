@@ -5,6 +5,7 @@ import java.util.List;
 import okan.proje.business.abstracts.IngredientService;
 import okan.proje.business.constants.Messages;
 import okan.proje.core.utilities.results.DataResult;
+import okan.proje.core.utilities.results.ErrorDataResult;
 import okan.proje.core.utilities.results.ErrorResult;
 import okan.proje.core.utilities.results.Result;
 import okan.proje.core.utilities.results.SuccessDataResult;
@@ -24,7 +25,7 @@ public class IngredientManager implements IngredientService {
 	@Override
 	public Result add(Ingredient ingredient) {
 		
-		if(!controlOfDuplicateIngredient(ingredient)) {
+		if(controlOfDuplicateIngredient(ingredient)) {
 			return new ErrorResult(Messages.addedDuplicateIngredientFailed);
 		}
 		this.ingredientDao.add(ingredient);
@@ -61,6 +62,9 @@ public class IngredientManager implements IngredientService {
 
 	@Override
 	public DataResult<Ingredient> getIngredientDetails(int id) {
+		if(!controlOfDuplicateIngredient(new Ingredient(id, null, 0))) {
+			return new ErrorDataResult<Ingredient>(null, Messages.ingredientListedFailed);
+		}
 		return new SuccessDataResult<Ingredient>(this.ingredientDao.getIngredientDetails(id),
 																		Messages.ingredientsListed);
 		
@@ -71,10 +75,10 @@ public class IngredientManager implements IngredientService {
 		{
 			if(ingredient.getId() == i.getId())
 			{
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 }
