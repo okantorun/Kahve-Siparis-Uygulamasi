@@ -1,17 +1,13 @@
 package okan.proje.entities.concretes;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Ingredient {
 	private int id;
 	private String ingredientName;
 	private int unitInStock;
-	public Ingredient(int id, String ingredientName, int unitInStock) {
-		super();
-		this.id = id;
-		this.ingredientName = ingredientName;
-		this.unitInStock = unitInStock;
-	}
 }
 
