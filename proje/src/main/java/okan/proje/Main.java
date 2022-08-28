@@ -16,12 +16,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		CoffeeService coffeeService = new CoffeeManager(new InMemoryCoffeeDao(),
-																	new IngredientManager(new InMemoryIngredientDao()));
-		
 		IngredientService ingredientService = new IngredientManager(new InMemoryIngredientDao());
 		
-		coffeeService.order(new Coffee(3,"Cappuccino",22,Map.of(1,1,2,4)));
+		CoffeeService coffeeService = new CoffeeManager(new InMemoryCoffeeDao(),ingredientService);
+		
+		System.out.println(ingredientService.getIngredientDetails(5));
+		coffeeService.order(6);
+		System.out.println(ingredientService.getIngredientDetails(5));
 		/*ingredientService.delete(new Ingredient(1,"Espresso",10));
 		for (var ingredient : ingredientService.getAll()) {
 			System.out.println(ingredient.getIngredientName());

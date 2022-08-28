@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Data;
 import okan.proje.dataAccess.abstracts.CoffeeDao;
 import okan.proje.entities.concretes.Coffee;
 import okan.proje.entities.concretes.Ingredient;
 
+@Data
 public class InMemoryCoffeeDao implements CoffeeDao {
 	
 	private List<Coffee> coffees;
@@ -27,7 +29,7 @@ public class InMemoryCoffeeDao implements CoffeeDao {
 
 	@Override
 	public void order(Coffee coffee) {
-		
+		return;
 	}
 
 	@Override

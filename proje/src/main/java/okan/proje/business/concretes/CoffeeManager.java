@@ -21,11 +21,15 @@ public class CoffeeManager implements CoffeeService {
 	}
 
 	@Override
-	public void order(Coffee coffee) {
-	 
-		if(!controlOfIngredientStock(coffee)) {
+	public void order(int id) {
+		
+		Coffee coffeeOrdered = findReferenceOfCoffee(new Coffee(id, null, 0, null));
+		if(!controlOfIngredientStock(coffeeOrdered)) {
 			System.out.println("İstediğiniz ürün için gerekli olan malzemeler yetersizdir.Lütfen başka ürün seçiniz.");
+			return;
 		}
+		takeIngredientsOutOfStock(coffeeOrdered);
+		this.coffeeDao.order(coffeeOrdered);
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class CoffeeManager implements CoffeeService {
 	}
 	
 	private boolean controlOfIngredientStock(Coffee coffee) {
-		Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
+		 Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
 		
 		 Iterator hmIterator = hm.entrySet().iterator();
 		 while (hmIterator.hasNext()) {		 
@@ -70,11 +74,43 @@ public class CoffeeManager implements CoffeeService {
 	         int ingredientId = (int)mapElement.getKey();
 	         int requiredSpecifiedIngredient = (int)mapElement.getValue();
 	         int stockOfRequiredIngredient = this.ingredientService.getIngredientDetails(ingredientId).getUnitInStock();
-	         if(stockOfRequiredIngredient < requiredSpecifiedIngredient) 
+	         if(stockOfRequiredIngredient < requiredSpecifiedIngredient) {
 	        	 return false;
+	         }
 	     }
 	     
 		 return true;
+	}
+	
+	private void takeIngredientsOutOfStock(Coffee coffee) {
+		Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
+		
+		 Iterator hmIterator = hm.entrySet().iterator();
+		 while (hmIterator.hasNext()) {		 
+			 
+	         Map.Entry mapElement
+	             = (Map.Entry)hmIterator.next();       
+	         
+	         int ingredientId = (int)mapElement.getKey();
+	         int requiredSpecifiedIngredient = (int)mapElement.getValue();
+	         int lastStock = this.ingredientService.getIngredientDetails(ingredientId).getUnitInStock();
+	         int newStock = lastStock - requiredSpecifiedIngredient;
+	         this.ingredientService.getIngredientDetails(ingredientId).setUnitInStock(newStock);
+	         System.out.println(requiredSpecifiedIngredient+"x"+this.ingredientService.getIngredientDetails(ingredientId).getIngredientName());
+	         
+	     }
+	     
+	}
+	private Coffee findReferenceOfCoffee(Coffee coffee) {
+		Coffee coffeeWanted = null;
+		for (var c : coffeeDao.getAll()) 
+		{
+			if(coffee.getId() == c.getId())
+			{
+				coffeeWanted = c;
+			}
+		}
+		return coffeeWanted;
 	}
 
 }
