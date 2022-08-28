@@ -3,6 +3,12 @@ package okan.proje.business.concretes;
 import java.util.List;
 
 import okan.proje.business.abstracts.IngredientService;
+import okan.proje.business.constants.Messages;
+import okan.proje.core.utilities.results.DataResult;
+import okan.proje.core.utilities.results.ErrorResult;
+import okan.proje.core.utilities.results.Result;
+import okan.proje.core.utilities.results.SuccessDataResult;
+import okan.proje.core.utilities.results.SuccessResult;
 import okan.proje.dataAccess.abstracts.IngredientDao;
 import okan.proje.entities.concretes.Ingredient;
 
@@ -16,34 +22,59 @@ public class IngredientManager implements IngredientService {
 
 	
 	@Override
-	public void add(Ingredient ingredient) {
+	public Result add(Ingredient ingredient) {
 		
+		if(!controlOfDuplicateIngredient(ingredient)) {
+			return new ErrorResult(Messages.addedDuplicateIngredientFailed);
+		}
 		this.ingredientDao.add(ingredient);
+		return new SuccessResult(Messages.ingredientsAdded);
 		
 	}
 
 	@Override
-	public void delete(Ingredient ingredient) {
+	public Result delete(Ingredient ingredient) {
+		if(!controlOfDuplicateIngredient(ingredient)) {
+			return new ErrorResult(Messages.deletedDuplicateIngredientFailed);
+		}
 		this.ingredientDao.delete(ingredient);
+		return new SuccessResult(Messages.ingredientsDeleted);
 		
 	}
 
 	@Override
-	public void update(Ingredient ingredient) {
+	public Result update(Ingredient ingredient) {
+		if(!controlOfDuplicateIngredient(ingredient)) {
+			return new ErrorResult(Messages.updatedDuplicateIngredientFailed);
+		}
 		this.ingredientDao.update(ingredient);
+		return new SuccessResult(Messages.ingredientsUpdated);
 		
 	}
 
 	@Override
-	public List<Ingredient> getAll() {
-		
-		return this.ingredientDao.getAll();
+	public DataResult<List<Ingredient>> getAll() {		
+		return new SuccessDataResult<List<Ingredient>>(this.ingredientDao.getAll(),
+																		Messages.ingredientsListed);
 	}
 
 
 	@Override
-	public Ingredient getIngredientDetails(int id) {
-		return this.ingredientDao.getIngredientDetails(id);
+	public DataResult<Ingredient> getIngredientDetails(int id) {
+		return new SuccessDataResult<Ingredient>(this.ingredientDao.getIngredientDetails(id),
+																		Messages.ingredientsListed);
+		
+	}
+	
+	private boolean controlOfDuplicateIngredient(Ingredient ingredient) {
+		for (var i : ingredientDao.getAll()) 
+		{
+			if(ingredient.getId() == i.getId())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

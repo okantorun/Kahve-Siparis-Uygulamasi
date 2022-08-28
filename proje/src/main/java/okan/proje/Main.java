@@ -20,14 +20,16 @@ public class Main {
 		
 		CoffeeService coffeeService = new CoffeeManager(new InMemoryCoffeeDao(),ingredientService);
 		
-		System.out.println(ingredientService.getIngredientDetails(5));
+		
+	
+		/*System.out.println(ingredientService.getIngredientDetails(5));
 		coffeeService.order(6);
-		System.out.println(ingredientService.getIngredientDetails(5));
-		/*ingredientService.delete(new Ingredient(1,"Espresso",10));
-		for (var ingredient : ingredientService.getAll()) {
-			System.out.println(ingredient.getIngredientName());
+		System.out.println(ingredientService.getIngredientDetails(5));*/
+		//ingredientService.delete(new Ingredient(1,"Espresso",10));
+		for (var ingredient : ingredientService.getAll().getData()) {
+			System.out.println(ingredient);
 		}
-		ingredientService.add(new Ingredient(1,"Espresso",10));
+		/*ingredientService.add(new Ingredient(1,"Espresso",10));
 		for (var ingredient : ingredientService.getAll()) {
 			System.out.println(ingredient.getIngredientName());
 		}*/

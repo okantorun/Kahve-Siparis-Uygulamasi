@@ -8,9 +8,13 @@ import okan.proje.business.abstracts.CoffeeService;
 import okan.proje.business.abstracts.IngredientService;
 import okan.proje.business.constants.Messages;
 import okan.proje.core.utilities.results.DataResult;
+import okan.proje.core.utilities.results.ErrorResult;
+import okan.proje.core.utilities.results.Result;
 import okan.proje.core.utilities.results.SuccessDataResult;
+import okan.proje.core.utilities.results.SuccessResult;
 import okan.proje.dataAccess.abstracts.CoffeeDao;
 import okan.proje.entities.concretes.Coffee;
+import okan.proje.entities.concretes.Ingredient;
 
 public class CoffeeManager implements CoffeeService {
 	
@@ -24,39 +28,43 @@ public class CoffeeManager implements CoffeeService {
 	}
 
 	@Override
-	public void order(int id) {
+	public Result order(int id) {
 		
 		Coffee coffeeOrdered = findReferenceOfCoffee(new Coffee(id, null, 0, null));
 		if(!controlOfIngredientStock(coffeeOrdered)) {
-			System.out.println("İstediğiniz ürün için gerekli olan malzemeler yetersizdir.Lütfen başka ürün seçiniz.");
-			return;
+			return new ErrorResult(Messages.insufficientIngredient);
 		}
 		takeIngredientsOutOfStock(coffeeOrdered);
 		this.coffeeDao.order(coffeeOrdered);
+		return new SuccessResult(Messages.coffeeOrdered);
 	}
 
 	@Override
-	public void add(Coffee coffee) {
+	public Result add(Coffee coffee) {
 		
 		this.coffeeDao.add(coffee);
+		return new SuccessResult(Messages.coffeeAdded);
 	}
 
 	@Override
-	public void delete(Coffee coffee) {
+	public Result delete(Coffee coffee) {
 		this.coffeeDao.delete(coffee);
+		return new SuccessResult(Messages.coffeeDeleted);
 		
 	}
 
 	@Override
-	public void update(Coffee coffee) {
+	public Result update(Coffee coffee) {
 		this.coffeeDao.update(coffee);
+		return new SuccessResult(Messages.coffeeUpdated);
 		
 	}
 
 	@Override
-	public Coffee getCoffeeDetails(int id) {
-		
-		return this.getCoffeeDetails(id);
+	public DataResult<Coffee> getCoffeeDetails(int id) {
+				
+		return new SuccessDataResult<Coffee>(this.coffeeDao.getCoffeeDetails(id),
+																Messages.coffeesListed);
 	}
 
 	@Override
@@ -99,10 +107,11 @@ public class CoffeeManager implements CoffeeService {
 	         
 	         int ingredientId = (int)mapElement.getKey();
 	         int requiredSpecifiedIngredient = (int)mapElement.getValue();
-	         int lastStock = this.ingredientService.getIngredientDetails(ingredientId).getUnitInStock();
+	         int lastStock = this.ingredientService.getIngredientDetails(ingredientId).getData().getUnitInStock();
 	         int newStock = lastStock - requiredSpecifiedIngredient;
-	         this.ingredientService.getIngredientDetails(ingredientId).setUnitInStock(newStock);
-	         System.out.println(requiredSpecifiedIngredient+"x"+this.ingredientService.getIngredientDetails(ingredientId).getIngredientName());
+	         this.ingredientService.getIngredientDetails(ingredientId).getData().setUnitInStock(newStock);
+	         System.out.println(requiredSpecifiedIngredient+"x"+this.ingredientService.getIngredientDetails(ingredientId).
+	        		 																				getData().getIngredientName());
 	         
 	     }
 	     
