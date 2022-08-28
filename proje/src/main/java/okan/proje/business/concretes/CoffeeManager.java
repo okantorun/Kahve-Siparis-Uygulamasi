@@ -6,6 +6,9 @@ import java.util.Map;
 
 import okan.proje.business.abstracts.CoffeeService;
 import okan.proje.business.abstracts.IngredientService;
+import okan.proje.business.constants.Messages;
+import okan.proje.core.utilities.results.DataResult;
+import okan.proje.core.utilities.results.SuccessDataResult;
 import okan.proje.dataAccess.abstracts.CoffeeDao;
 import okan.proje.entities.concretes.Coffee;
 
@@ -57,9 +60,12 @@ public class CoffeeManager implements CoffeeService {
 	}
 
 	@Override
-	public List<Coffee> getAll() {
+	public DataResult<List<Coffee>> getAll() {
 
-		return this.coffeeDao.getAll();
+		return new SuccessDataResult<List<Coffee>>
+					(this.coffeeDao.getAll(),Messages.coffeesListed);
+				
+				
 	}
 	
 	private boolean controlOfIngredientStock(Coffee coffee) {

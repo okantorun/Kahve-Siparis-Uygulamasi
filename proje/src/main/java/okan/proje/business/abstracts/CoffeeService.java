@@ -2,6 +2,7 @@ package okan.proje.business.abstracts;
 
 import java.util.List;
 
+import okan.proje.core.utilities.results.DataResult;
 import okan.proje.entities.concretes.Coffee;
 
 public interface CoffeeService {
@@ -9,6 +10,6 @@ public interface CoffeeService {
 	void add(Coffee coffee);
 	void delete(Coffee coffee);
 	void update(Coffee coffee);
-	Coffee getCoffeeDetails(int id);
-	List<Coffee> getAll();
+	DataResult<Coffee> getCoffeeDetails(int id);
+	DataResult<List<Coffee>> getAll();
 }
