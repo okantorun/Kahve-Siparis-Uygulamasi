@@ -19,10 +19,10 @@ public class InMemoryCoffeeDao implements CoffeeDao {
 		this.coffees = new ArrayList<Coffee>(
 				Arrays.asList(new Coffee(1,"Espresso",17,Map.of(1,1)),
 							  new Coffee(2,"Double Espresso",22,Map.of(1,2)),
-							  new Coffee(3,"Cappuccino",22,Map.of(1,1,2,4)),
-							  new Coffee(4,"Caffe Latte",22,Map.of(1,1,3,2,4,2)),
-							  new Coffee(5,"Mocha",23,Map.of(1,1,3,2,4,1)),
-							  new Coffee(6,"Americano",20,Map.of(1,1,3,1,4,1,5,2)),
+							  new Coffee(3,"Americano",22,Map.of(1,1,2,4)),
+							  new Coffee(4,"Cappucino",22,Map.of(1,1,3,2,4,2)),
+							  new Coffee(5,"Caffe Latte",23,Map.of(1,1,3,2,4,1)),
+							  new Coffee(6,"Mocha",20,Map.of(1,1,3,1,4,1,5,2)),
 							  new Coffee(7,"Hot Water",4,Map.of(2,5)))
 		);
 	}

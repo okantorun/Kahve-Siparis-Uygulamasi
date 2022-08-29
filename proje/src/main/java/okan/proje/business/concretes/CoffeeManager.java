@@ -32,7 +32,6 @@ public class CoffeeManager implements CoffeeService {
 		
 		Coffee coffeeOrdered = findReferenceOfCoffee(new Coffee(id, null, 0, null));
 		if(!controlOfIngredientStock(coffeeOrdered)) {
-			System.out.println(Messages.insufficientIngredient);
 			return new ErrorResult(Messages.insufficientIngredient);
 		}
 		takeIngredientsOutOfStock(coffeeOrdered);
@@ -98,12 +97,13 @@ public class CoffeeManager implements CoffeeService {
 	}
 	
 	private void takeIngredientsOutOfStock(Coffee coffee) {
-		
-		Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
-		 Iterator hmIterator = hm.entrySet().iterator();
+		 
 		 String coffeeName=coffeeDao.getCoffeeDetails(coffee.getId()).getCoffeeName();
 		 System.out.println("Teşekkürler kahveniz hazırlanıyor.");
 		 System.out.println(coffeeName+" seçtiniz.Bu kahvenin içindekiler");
+		 
+		 Map<Integer, Integer> hm	= coffee.getIngredientsOfCoffee();
+		 Iterator hmIterator = hm.entrySet().iterator();
 		 while (hmIterator.hasNext()) {		 
 			 
 	         Map.Entry mapElement

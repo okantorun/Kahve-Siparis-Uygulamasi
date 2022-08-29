@@ -1,12 +1,6 @@
 package okan.proje;
 
-import static org.junit.Assert.*; 
-
 import java.util.Map;
-import java.util.Scanner;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
@@ -74,7 +68,6 @@ public class ProjectTest {
 		updateCoffee();
 		testGetAllCoffees();
 		testOrder4();
-		
 	}
 	
 	public void testGetAllCurrentIngredients() {
@@ -97,7 +90,8 @@ public class ProjectTest {
 	public void testOrder2() {
 		System.out.println("1");
 		System.out.println("----------------");
-		coffeeService.order(1);
+		System.out.println(coffeeService.order(1).getMessage());
+		
 	}
 	
 	public void testOrder3() {
@@ -124,14 +118,16 @@ public class ProjectTest {
 	}
 	public void addNewIngredient() {
 		System.out.println("----------------");
-		System.out.println("Sisteme yeni malzeme eklendi");
-		ingredientService.add(new Ingredient(6, "White Chocolate", 10));
+		System.out.println(ingredientService.add(new Ingredient(6, "White Chocolate", 10)).
+																					getMessage());
+		
 	}
 	
 	public void addNewCoffee() {
 		System.out.println("----------------");
-		System.out.println("Sisteme yeni kahve eklendi");
-		coffeeService.add(new Coffee(8, "White Chocolate Mocha", 30, Map.of(1,1,3,3,4,2,6,4) ));
+		System.out.println(coffeeService.add(new Coffee(8, "White Chocolate Mocha", 30, Map.of(1,1,3,3,4,2,6,4) )).
+																											getMessage());
+		
 	}
 	
 	public void deleteCoffee() {
